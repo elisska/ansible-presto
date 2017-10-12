@@ -5,7 +5,7 @@ Setup Presto using Ansible - POC version.
 # Prepequisites
 On every node you want to install Presto, you must have:
 * Linux
-* Java 8 - 
+* Java 8
   * You may install it using [this playbook](https://gist.github.com/elisska/7730c1252088217a19eb6a0cd190f1e3)
 * Python 2.4+
 * Hive metastore
