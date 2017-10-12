@@ -1,0 +1,7 @@
+coordinator=true
+node-scheduler.include-coordinator=false
+http-server.http.port=8080
+query.max-memory=1000GB
+query.max-memory-per-node=6GB
+discovery-server.enabled=true
+discovery.uri=http://<COORDINATOR_HOSTNAME>:8080

@@ -1,0 +1,78 @@
+# tasks file
+- name: Remove old Presto directory if exists
+  file: path=/opt/presto* state=absent
+
+- name: Download and unarchive Presto
+  unarchive:
+    src: https://repo1.maven.org/maven2/com/facebook/presto/presto-server/0.185/presto-server-0.185.tar.gz
+    dest: /opt
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Symbolic link for presto server
+  file: 
+    src: /opt/presto-server-0.185
+    dest: /opt/presto
+    state: link
+
+- name: Create data Presto directory
+  file: 
+    path: /opt/presto/data
+    state: directory
+
+- name: Create etc Presto directory
+  file: 
+    path: /opt/presto/etc
+    state: directory
+
+- name: Create etc/catalog Presto directory
+  file:
+    path: /opt/presto/etc/catalog
+    state: directory
+
+- name: Copy node.properties
+  copy: 
+    src: ../files/node.properties
+    dest: /opt/presto/etc/node.properties 
+    owner: root 
+    group: root
+    mode: 0755
+
+- name: Create a unique ID for Presto node
+  shell: uuidgen
+  register: my_unique_id
+
+- name: Setup GUID for Presto node
+  lineinfile:
+    path: /opt/presto/etc/node.properties
+    regexp: 'ffffffff-ffff-ffff-ffff-ffffffffffff'
+    line: 'node.id={{ my_unique_id.stdout }}'
+
+- name: Copy jvm.config for coordinator node
+  copy: 
+    src: ../files/jvm.config.worker
+    dest: /opt/presto/etc/jvm.config 
+    owner: root 
+    group: root
+    mode: 0755
+
+- name: Copy config.properties for coordinator node
+  copy:
+    src: ../files/config.properties.worker
+    dest: /opt/presto/etc/config.properties
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy hive.properties
+  copy:
+    src: ../files/hive.properties
+    dest: /opt/presto/etc/catalog/hive.properties     
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Start Presto coordinator
+  command: /opt/presto/bin/launcher start

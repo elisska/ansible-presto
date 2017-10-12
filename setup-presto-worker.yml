@@ -1,0 +1,5 @@
+---
+- hosts: all
+  sudo: yes
+  roles:
+    - install-presto-worker

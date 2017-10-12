@@ -1,0 +1,6 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+  - name: Start Presto
+    command: '/opt/presto/bin/launcher stop' 
