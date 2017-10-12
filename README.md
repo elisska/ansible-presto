@@ -1,6 +1,6 @@
 # ansible-presto
 
-Setup Presto using Ansible.
+Setup Presto using Ansible - POC version.
 
 # Prepequisites
 On every node you want to install Presto, you must have:
@@ -40,5 +40,15 @@ Stop command:
 ```
 ansible-playbook -i inventory-coordinator stop-presto.yml -u <remote_user> --private-key=<path_to_private_key>
 ansible-playbook -i inventory-worker stop-presto.yml -u <remote_user> --private-key=<path_to_private_key>
+```
+
+# Connect and run queries
+Download Presto command line interface and run queries: 
+```
+wget https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/0.185/presto-cli-0.185-executable.jar
+mv presto-cli-0.185-executable.jar presto
+chmod +x presto
+./presto --server <COORDINATOR_HOSTNAME>:8080 --catalog hive --schema default
+presto:default>
 ```
 
